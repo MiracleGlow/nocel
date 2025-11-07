@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buat Sesi {{ 'Private' if session_type == 'private' else 'Publik' }} - Nocel
+{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center mb-4">
+    <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <h1 class="h3 mb-0">
+        Buat Sesi {{ 'Private' if session_type == 'private' else 'Publik' }} Baru
+    </h1>
+</div>
+
+{% if session_type == 'private' %}
+<div class="alert alert-warning">
+    <i class="bi bi-info-circle-fill me-2"></i>
+    Sesi private tidak akan ditampilkan di halaman utama. Anda akan diberi kode unik untuk mengaksesnya setelah sesi dibuat.
+</div>
+{% endif %}
+
+<ul class="nav nav-tabs" id="newSessionTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual" type="button" role="tab">Tulis Catatan</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab">Upload File</button>
+    </li>
+</ul>
+
+<div class="tab-content p-3 pt-4 border border-top-0 rounded-bottom">
+    <div class="tab-pane fade show active" id="manual" role="tabpanel">
+      <form method="POST">
+        <input type="hidden" name="mode" value="manual">
+        <div class="mb-3">
+          <label for="sessionNameManual" class="form-label">Nama Sesi</label>
+          <input type="text" class="form-control" id="sessionNameManual" name="session_name" required>
+        </div>
+        <div class="mb-3">
+          <label for="contentManual" class="form-label">Catatan Awal (Opsional)</label>
+          <textarea class="form-control" id="contentManual" name="content" rows="8" placeholder="Tulis catatan di sini..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-plus-circle me-1"></i>Buat Sesi
+        </button>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="upload" role="tabpanel">
+      <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="mode" value="upload">
+        <div class="mb-3">
+          <label for="sessionNameUpload" class="form-label">Nama Sesi</label>
+          <input type="text" class="form-control" id="sessionNameUpload" name="session_name" required>
+        </div>
+        <div class="mb-3">
+          <label for="fileUpload" class="form-label">Pilih File</label>
+          <input type="file" class="form-control" id="fileUpload" name="file" required>
+          <div class="form-text">Ukuran file maksimal yang disarankan adalah 4 MB.</div>
+        </div>
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-upload me-1"></i>Upload & Buat Sesi
+        </button>
+      </form>
+    </div>
+</div>
+{% endblock %}
